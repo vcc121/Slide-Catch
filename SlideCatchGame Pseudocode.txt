@@ -1,20 +1,49 @@
 import pygame, simpleGE, random
 
-initialize
-set display size
+class Frog(simpleGE.Sprite)
+    def init (scene)
+        set image to froggy.png
+        set size to 50x50
+        set initial position to (320, 400)
+        set move speed to 5
+    
+    def process
+        check if 'a' key pressed
+            move frog left
+        check if 'd' key pressed
+            move frog right
 
-create class Sprite(pygame.sprite.Sprite)
-	def init
-		load image
-		convert
-	
-		create rect
+class Fly(simpleGE.Sprite)
+    def init (scene)
+        set image to fly.png
+        set size to 50x50
+        set min and max speed (3 and 8)
+        reset fly
+    
+    def reset
+        set random x position (0 to screen width)
+        set y position to 0
+        set random falling speed (between min and max speed)
+        
+    def checkBounds
+        if fly reaches bottom of screen
+            reset fly
 
-		create movement (dx and dy)
+class Game(simpleGE.Scene)
+    def init
+        set background to pond background.jpg
+        create frog
+        create fly
+        load sound (blip sound.wav)
+        add frog and fly to sprites list
+    
+    def process
+        if frog collides with fly
+            play blip sound
+            reset fly
 
-	def process(self)
-		key movement
-		a key pressed makes sprite go left
-		d key pressed makes sprite go right
-		
-		check bounds and go to other side of screen if sprite hits bounds
+def main
+    create game instance
+    start game
+
+call main
