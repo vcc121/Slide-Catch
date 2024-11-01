@@ -1,0 +1,20 @@
+import pygame, simpleGE, random
+
+initialize
+set display size
+
+create class Sprite(pygame.sprite.Sprite)
+	def init
+		load image
+		convert
+	
+		create rect
+
+		create movement (dx and dy)
+
+	def process(self)
+		key movement
+		a key pressed makes sprite go left
+		d key pressed makes sprite go right
+		
+		check bounds and go to other side of screen if sprite hits bounds
