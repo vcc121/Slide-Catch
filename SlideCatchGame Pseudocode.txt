@@ -5,7 +5,7 @@ class Frog(simpleGE.Sprite)
         set image to froggy.png
         set size to 50x50
         set initial position to (320, 400)
-        set move speed to 5
+        set move speed to 6
     
     def process
         check if 'a' key pressed
@@ -29,21 +29,85 @@ class Fly(simpleGE.Sprite)
         if fly reaches bottom of screen
             reset fly
 
+class Intro(simpleGE.Scene)
+    def init (score = 0)
+        set background to pond background.jpg
+        set initial status to "quit"
+        set score to score argument
+        
+        create and set instructions label
+            add text lines for game instructions
+            center label (320, 240)
+        
+        create and set score label
+            set label text to "Previous Score: {score}"
+            center label (320, 100)
+        
+        create play button
+            set text to "Play"
+            center button (150, 400)
+        
+        create quit button
+            set text to "Quit"
+            center button (500, 400)
+        
+        add score label, instructions label, play button, and quit button to sprites list
+
+    def process
+        if play button clicked
+            set status to "play"
+            stop scene
+        if quit button clicked
+            set status to "quit"
+            stop scene
+
+class LblScore(simpleGE.Label)
+    def init
+        set text to "Score: 0"
+        center label (100, 30)
+
+class LblTime(simpleGE.Label)
+    def init
+        set text to "Time left: 10"
+        center label (500, 30)
+
 class Game(simpleGE.Scene)
     def init
         set background to pond background.jpg
-        create frog
-        create fly
+        create frog sprite
+        set number of flies to 10
         load sound (blip sound.wav)
-        add frog and fly to sprites list
+        set initial score to 0
+        create score label
+        create timer and set time to 10
+        create time label
+        create list for fly sprites and add 10 flies to it
+        add frog, flies, score label, and time label to sprites list
     
     def process
-        if frog collides with fly
-            play blip sound
-            reset fly
+        for each fly in flies
+            if fly collides with frog
+                reset fly position
+                play blip sound
+                increase score by 1
+                update score label text
+        
+        update time label text with remaining time
+        if timer runs out
+            stop scene
 
 def main
-    create game instance
-    start game
+    set keepGoing to True
+    set score to 0
+    
+    while keepGoing
+        create intro instance with score
+        start intro scene
+        if intro status is "quit"
+            set keepGoing to False
+        else
+            create game instance
+            start game scene
+            update score to game's final score
 
 call main
